@@ -16,10 +16,10 @@
 #define SALT_LEN 16
 #define KEY_LEN 32
 #define PBKDF2_ITER 10000
-// 1. 定义长度常量，方便维护
 #define FILE_NAME_MAX_LEN 256 // 对应数据库 VARCHAR(255)，+1用于 '\0'
 #define MD5_STR_LEN 33        // 对应数据库 CHAR(32)，+1用于 '\0'
-
+#define ROOT_ID 0
+#define DIRECTORY_SIZE 4096
 // 2. 使用枚举代替魔数，提高代码可读性
 typedef enum {
     FILE_TYPE_UNKNOWN = 0,
@@ -52,4 +52,8 @@ int selectUsernameUnique(const char *username);
 void DatabaseClose();
 int insertUser(const char *username, const char *password);
 int selectUserInfo(user_info_t *user, char *response);
+int initUserVirtualTable(int userId);
 int listFiles(user_info_t *user, file_t *files, int max_files);
+int insertFile(file_t *file);
+int getDirectoryId(user_info_t *user, char *path_str);
+int resolveOrCreateDirectory(user_info_t *user, const char **path);
